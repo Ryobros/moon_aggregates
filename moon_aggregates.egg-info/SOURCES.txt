@@ -1,0 +1,9 @@
+LICENSE
+README.md
+setup.py
+moon_aggregates.egg-info/PKG-INFO
+moon_aggregates.egg-info/SOURCES.txt
+moon_aggregates.egg-info/dependency_links.txt
+moon_aggregates.egg-info/top_level.txt
+src/__init__.py
+src/gps_convert.py
