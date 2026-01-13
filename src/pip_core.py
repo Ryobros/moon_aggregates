@@ -1,6 +1,61 @@
 import geopandas as gpd
 import pandas as pd
 from pathlib import Path
+import time
+
+
+def pip_pipeline(
+    shp_path: str,
+    csv_path: str,
+    polygon: str,
+    output_dir: str,
+    sep: str = ";",
+    lon_col: str = "longitude",
+    lat_col: str = "latitude"
+):
+    """
+    Full PIP pipeline:
+    1. load polygon kabupaten (kecamatan level)
+    2. load point CSV
+    3. points-in-polygon
+    4. export CSV per kecamatan
+    """
+
+    # 1. Polygon administrasi
+    print(f"Sedang memuat data polygon dari {shp_path}")
+    polygons = load_polygon_admin(
+        shp_path=shp_path,
+        kabupaten=polygon
+    )
+    time.sleep(1)
+
+    # 2. Titik
+    print(f"Sedang memuat dataset dari {csv_path}")
+    points = load_points_datasets(
+        csv_path=csv_path,
+        sep=sep,
+        lon_col=lon_col,
+        lat_col=lat_col,
+        crs=polygons.crs
+    )
+    time.sleep(1)
+
+    # 3. PIP
+    print(f"Mohon tunggu......")
+    pip_result = run_pip(
+        points_gdf=points,
+        polygon_gdf=polygons
+    )
+
+    # 4. Export
+    export_by_kecamatan(
+        pip_gdf=pip_result,
+        output_dir=output_dir
+    )
+    time.sleep(1)
+    print("Proses selesai")
+
+    return pip_result
 
 
 def load_polygon_admin(
@@ -55,6 +110,7 @@ def export_by_kecamatan(pip_gdf, output_dir):
 
         fname = f"kecamatan_{kec.lower().replace(' ', '_')}.csv"
         group.drop(columns="geometry").to_csv(output_dir / fname, index=False)
+
 
 
 
