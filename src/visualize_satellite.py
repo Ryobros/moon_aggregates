@@ -7,11 +7,11 @@ def satVis(csv_path:str,
            sep:str=","):
     df = pd.read_csv('csv_path')
 
-# Create a map centered on the mean coordinates
+# Direct map visual centered berdasarkan rata rata koordinat
     center_lat = df['latitude'].mean()
     center_lon = df['longitude'].mean()
 
-    # Create a Folium map with satellite tiles
+    # Membuat Folium map bernuansa satelit
     m = folium.Map(location=[center_lat, center_lon], zoom_start=15, tiles='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', attr='Esri')
 
     # Add markers for each point
@@ -24,7 +24,7 @@ def satVis(csv_path:str,
             icon=folium.Icon(color='red', icon='info-sign')
         ).add_to(marker_cluster)
 
-    # Save the map
+    # Save
     m.save('../data/output/map/satellite_visualization.html')
     print("Map saved as 'satellite_visualization.html'. Open it in a web browser to view.")
 
