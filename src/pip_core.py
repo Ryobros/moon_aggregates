@@ -53,7 +53,7 @@ def pip_pipeline(
         output_dir=output_dir
     )
     time.sleep(1)
-    print("Proses selesai")
+    print(f"Proses selesai. File tersimpan di {output_dir}")
 
     return pip_result
 
